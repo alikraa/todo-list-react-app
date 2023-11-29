@@ -2,9 +2,23 @@ import { useMemo } from 'react';
 import { IconContext } from 'react-icons';
 import { FiEdit3 } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
-import styles from './task-list.module.css';
+import styles from './tasks-list.module.css';
 
-function Task({ id, text }) {
+interface TaskProps {
+  id: string;
+  text: string;
+  isCompleted: boolean;
+  handleClickDelete: (id: string) => void;
+  handleClickCheckbox: (id: string) => void;
+}
+
+function Task({
+  id,
+  text,
+  isCompleted,
+  handleClickDelete,
+  handleClickCheckbox,
+}: TaskProps) {
   const actionButtonStyle = useMemo(
     () => ({
       size: '1.5em',
@@ -16,7 +30,13 @@ function Task({ id, text }) {
   return (
     <div className={styles.container}>
       <div className={styles.taskContent}>
-        <label htmlFor={id} className={styles.task}>
+        <label
+          htmlFor={id}
+          className={
+            isCompleted ? `${styles.task} ${styles.taskDone}` : `${styles.task}`
+          }
+          onChange={() => handleClickCheckbox(id)}
+        >
           <input type="checkbox" id={id} className={styles.realCheckbox} />
           <span className={styles.customCheckbox} />
           {text}
@@ -27,7 +47,12 @@ function Task({ id, text }) {
               <FiEdit3 />
             </IconContext.Provider>
           </button>
-          <button type="button" aria-label="Удалить" className={styles.button}>
+          <button
+            type="button"
+            aria-label="Удалить"
+            className={styles.button}
+            onClick={() => handleClickDelete(id)}
+          >
             <IconContext.Provider value={actionButtonStyle}>
               <MdDelete />
             </IconContext.Provider>

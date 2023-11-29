@@ -24,6 +24,10 @@
     cursor: pointer;
 }
 
+.taskDone {
+    text-decoration: line-through;
+}
+
 .realCheckbox {
     width: 0;
     height: 0;
