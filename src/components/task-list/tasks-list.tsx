@@ -1,4 +1,5 @@
 import { Task } from './task.tsx';
+import { ToDoEditForm } from '../todo-form/todo-edit-form.tsx';
 import { ITask } from '../../ts/types.ts';
 import styles from './tasks-list.module.css';
 
@@ -20,18 +21,34 @@ function TaskList({ tasks, setTasks }: TasksListProps) {
     );
   };
 
+  const editTask = (id: string) => {
+    setTasks(
+      tasks.map((item) =>
+        item.id === id ? { ...item, isEdit: !item.isEdit } : item
+      )
+    );
+  };
+
   return (
     <div className={styles.taskList}>
-      {tasks.map((item) => (
-        <Task
-          key={item.id}
-          id={item.id}
-          text={item.text}
-          isCompleted={item.isCompleted}
-          handleClickDelete={deleteTask}
-          handleClickCheckbox={changeTaskStatus}
-        />
-      ))}
+      {tasks.map((item) =>
+        item.isEdit ? (
+          <ToDoEditForm
+            key={item.id}
+            task={item}
+            tasks={tasks}
+            setTasks={setTasks}
+          />
+        ) : (
+          <Task
+            key={item.id}
+            task={item}
+            handleClickDelete={deleteTask}
+            handleClickCheckbox={changeTaskStatus}
+            handleClickEdit={editTask}
+          />
+        )
+      )}
     </div>
   );
 }

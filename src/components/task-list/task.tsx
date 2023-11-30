@@ -2,22 +2,21 @@ import { useMemo } from 'react';
 import { IconContext } from 'react-icons';
 import { FiEdit3 } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
+import { ITask } from '../../ts/types.ts';
 import styles from './tasks-list.module.css';
 
 interface TaskProps {
-  id: string;
-  text: string;
-  isCompleted: boolean;
+  task: ITask;
   handleClickDelete: (id: string) => void;
   handleClickCheckbox: (id: string) => void;
+  handleClickEdit: (id: string) => void;
 }
 
 function Task({
-  id,
-  text,
-  isCompleted,
+  task,
   handleClickDelete,
   handleClickCheckbox,
+  handleClickEdit,
 }: TaskProps) {
   const actionButtonStyle = useMemo(
     () => ({
@@ -31,18 +30,25 @@ function Task({
     <div className={styles.container}>
       <div className={styles.taskContent}>
         <label
-          htmlFor={id}
+          htmlFor={task.id}
           className={
-            isCompleted ? `${styles.task} ${styles.taskDone}` : `${styles.task}`
+            task.isCompleted
+              ? `${styles.task} ${styles.taskDone}`
+              : `${styles.task}`
           }
-          onChange={() => handleClickCheckbox(id)}
+          onChange={() => handleClickCheckbox(task.id)}
         >
-          <input type="checkbox" id={id} className={styles.realCheckbox} />
+          <input type="checkbox" id={task.id} className={styles.realCheckbox} />
           <span className={styles.customCheckbox} />
-          {text}
+          {task.text}
         </label>
         <div className={styles.actions}>
-          <button type="button" aria-label="Изменить" className={styles.button}>
+          <button
+            type="button"
+            aria-label="Изменить"
+            className={styles.button}
+            onClick={() => handleClickEdit(task.id)}
+          >
             <IconContext.Provider value={actionButtonStyle}>
               <FiEdit3 />
             </IconContext.Provider>
@@ -51,7 +57,7 @@ function Task({
             type="button"
             aria-label="Удалить"
             className={styles.button}
-            onClick={() => handleClickDelete(id)}
+            onClick={() => handleClickDelete(task.id)}
           >
             <IconContext.Provider value={actionButtonStyle}>
               <MdDelete />
