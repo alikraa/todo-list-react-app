@@ -1,12 +1,23 @@
-import { useState } from 'react';
-import { TaskList } from './components/task-list/tasks-list.tsx';
+import { useEffect, useState } from 'react';
+import { TaskList } from './components/task-list/task-list.tsx';
 import { ToDoForm } from './components/todo-form/todo-form.tsx';
-import { ITask } from './ts/types.ts';
 import { tasksData } from './ts/tasks-data.ts';
+import { ITask } from './ts/types.ts';
+import { key, getData } from './ts/storage.ts';
 import styles from './App.module.css';
 
 function App() {
-  const [tasks, setTasks] = useState<ITask[]>(tasksData);
+  const [tasks, setTasks] = useState<ITask[]>([]);
+
+  useEffect(() => {
+    const data = getData(key);
+
+    if (data) {
+      setTasks(data);
+    } else {
+      setTasks(tasksData);
+    }
+  }, []);
 
   return (
     <div className={styles.app}>

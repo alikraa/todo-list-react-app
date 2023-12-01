@@ -3,7 +3,7 @@ import { IconContext } from 'react-icons';
 import { FiEdit3 } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
 import { ITask } from '../../ts/types.ts';
-import styles from './tasks-list.module.css';
+import styles from './task-list.module.css';
 
 interface TaskProps {
   task: ITask;
@@ -38,7 +38,12 @@ function Task({
           }
           onChange={() => handleClickCheckbox(task.id)}
         >
-          <input type="checkbox" id={task.id} className={styles.realCheckbox} />
+          <input
+            type="checkbox"
+            id={task.id}
+            className={styles.realCheckbox}
+            defaultChecked={task.isCompleted}
+          />
           <span className={styles.customCheckbox} />
           {task.text}
         </label>

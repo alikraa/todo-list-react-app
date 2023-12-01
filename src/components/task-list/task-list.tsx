@@ -1,7 +1,8 @@
 import { Task } from './task.tsx';
 import { ToDoEditForm } from '../todo-form/todo-edit-form.tsx';
 import { ITask } from '../../ts/types.ts';
-import styles from './tasks-list.module.css';
+import { key, setData } from '../../ts/storage.ts';
+import styles from './task-list.module.css';
 
 interface TasksListProps {
   tasks: ITask[];
@@ -10,23 +11,28 @@ interface TasksListProps {
 
 function TaskList({ tasks, setTasks }: TasksListProps) {
   const deleteTask = (id: string) => {
-    setTasks(tasks.filter((item) => item.id !== id));
+    const updatedList = tasks.filter((item) => item.id !== id);
+
+    setTasks(updatedList);
+    setData(key, updatedList);
   };
 
   const changeTaskStatus = (id: string) => {
-    setTasks(
-      tasks.map((item) =>
-        item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
-      )
+    const updatedList = tasks.map((item) =>
+      item.id === id ? { ...item, isCompleted: !item.isCompleted } : item
     );
+
+    setTasks(updatedList);
+    setData(key, updatedList);
   };
 
   const editTask = (id: string) => {
-    setTasks(
-      tasks.map((item) =>
-        item.id === id ? { ...item, isEdit: !item.isEdit } : item
-      )
+    const updatedList = tasks.map((item) =>
+      item.id === id ? { ...item, isEdit: !item.isEdit } : item
     );
+
+    setTasks(updatedList);
+    setData(key, updatedList);
   };
 
   return (

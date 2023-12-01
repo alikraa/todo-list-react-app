@@ -3,6 +3,7 @@ import { nanoid } from 'nanoid';
 import { IconContext } from 'react-icons';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { ITask } from '../../ts/types.ts';
+import { key, setData } from '../../ts/storage.ts';
 import styles from './todo-form.module.css';
 
 interface ToDoFormProps {
@@ -33,6 +34,7 @@ function ToDoForm({ tasks, setTasks }: ToDoFormProps) {
     };
 
     setTasks([...tasks, newTask]);
+    setData(key, [...tasks, newTask]);
     setInputValue('');
   };
 

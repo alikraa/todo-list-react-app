@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { MdDone } from 'react-icons/md';
 import { ITask } from '../../ts/types.ts';
+import { key, setData } from '../../ts/storage.ts';
 import styles from './todo-form.module.css';
 
 interface ToDoFormEdit {
@@ -28,18 +29,19 @@ function ToDoEditForm({ task, tasks, setTasks }: ToDoFormEdit) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setTasks(
-      tasks.map((item) =>
-        item.id === task.id
-          ? {
-              ...item,
-              text: editValue,
-              isEdit: !item.isEdit,
-              isCompleted: false,
-            }
-          : item
-      )
+    const updatedList = tasks.map((item) =>
+      item.id === task.id
+        ? {
+            ...item,
+            text: editValue,
+            isEdit: !item.isEdit,
+            isCompleted: false,
+          }
+        : item
     );
+
+    setTasks(updatedList);
+    setData(key, updatedList);
   };
 
   return (
