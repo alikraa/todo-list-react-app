@@ -5,6 +5,10 @@
     margin-bottom: 15px;
 }
 
+.containerEdit {
+    box-shadow: 2px 2px 12px rgb(165, 121, 204);
+}
+
 .form {
     display: flex;
     justify-content: space-between;

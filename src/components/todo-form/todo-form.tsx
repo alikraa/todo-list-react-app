@@ -3,15 +3,13 @@ import { nanoid } from 'nanoid';
 import { IconContext } from 'react-icons';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { ITask } from '../../ts/types.ts';
-import { key, setData } from '../../ts/storage.ts';
+import { useAppDispatch } from '../../store/hooks.ts';
+import { addTask } from '../../store/taskListSlice.ts';
 import styles from './todo-form.module.css';
 
-interface ToDoFormProps {
-  tasks: ITask[];
-  setTasks: (tasks: ITask[]) => void;
-}
+function ToDoForm() {
+  const dispatch = useAppDispatch();
 
-function ToDoForm({ tasks, setTasks }: ToDoFormProps) {
   const [inputValue, setInputValue] = useState('');
 
   const addButtonStyle = useMemo(
@@ -33,8 +31,7 @@ function ToDoForm({ tasks, setTasks }: ToDoFormProps) {
       isEdit: false,
     };
 
-    setTasks([...tasks, newTask]);
-    setData(key, [...tasks, newTask]);
+    dispatch(addTask(newTask));
     setInputValue('');
   };
 

@@ -2,16 +2,17 @@ import React, { useMemo, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { MdDone } from 'react-icons/md';
 import { ITask } from '../../ts/types.ts';
-import { key, setData } from '../../ts/storage.ts';
+import { useAppDispatch } from '../../store/hooks.ts';
+import { editTaskText } from '../../store/taskListSlice.ts';
 import styles from './todo-form.module.css';
 
 interface ToDoFormEdit {
   task: ITask;
-  tasks: ITask[];
-  setTasks: (tasks: ITask[]) => void;
 }
 
-function ToDoEditForm({ task, tasks, setTasks }: ToDoFormEdit) {
+function ToDoEditForm({ task }: ToDoFormEdit) {
+  const dispatch = useAppDispatch();
+
   const [editValue, setEditValue] = useState(task.text);
 
   const addButtonStyle = useMemo(
@@ -29,19 +30,15 @@ function ToDoEditForm({ task, tasks, setTasks }: ToDoFormEdit) {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const updatedList = tasks.map((item) =>
-      item.id === task.id
-        ? {
-            ...item,
-            text: editValue,
-            isEdit: !item.isEdit,
-            isCompleted: false,
-          }
-        : item
-    );
+    const updatedTask: ITask = {
+      id: task.id,
+      text: editValue,
+      date: task.date,
+      isCompleted: task.isCompleted,
+      isEdit: task.isEdit,
+    };
 
-    setTasks(updatedList);
-    setData(key, updatedList);
+    dispatch(editTaskText(updatedTask));
   };
 
   return (

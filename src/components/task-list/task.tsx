@@ -3,21 +3,21 @@ import { IconContext } from 'react-icons';
 import { FiEdit3 } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
 import { ITask } from '../../ts/types.ts';
+import {
+  changeTaskStatus,
+  deleteTask,
+  editTask,
+} from '../../store/taskListSlice.ts';
+import { useAppDispatch } from '../../store/hooks.ts';
 import styles from './task-list.module.css';
 
 interface TaskProps {
   task: ITask;
-  handleClickDelete: (id: string) => void;
-  handleClickCheckbox: (id: string) => void;
-  handleClickEdit: (id: string) => void;
 }
 
-function Task({
-  task,
-  handleClickDelete,
-  handleClickCheckbox,
-  handleClickEdit,
-}: TaskProps) {
+function Task({ task }: TaskProps) {
+  const dispatch = useAppDispatch();
+
   const actionButtonStyle = useMemo(
     () => ({
       size: '1.5em',
@@ -36,7 +36,7 @@ function Task({
               ? `${styles.task} ${styles.taskDone}`
               : `${styles.task}`
           }
-          onChange={() => handleClickCheckbox(task.id)}
+          onChange={() => dispatch(changeTaskStatus(task.id))}
         >
           <input
             type="checkbox"
@@ -52,7 +52,7 @@ function Task({
             type="button"
             aria-label="Изменить"
             className={styles.button}
-            onClick={() => handleClickEdit(task.id)}
+            onClick={() => dispatch(editTask(task.id))}
           >
             <IconContext.Provider value={actionButtonStyle}>
               <FiEdit3 />
@@ -62,7 +62,7 @@ function Task({
             type="button"
             aria-label="Удалить"
             className={styles.button}
-            onClick={() => handleClickDelete(task.id)}
+            onClick={() => dispatch(deleteTask(task.id))}
           >
             <IconContext.Provider value={actionButtonStyle}>
               <MdDelete />

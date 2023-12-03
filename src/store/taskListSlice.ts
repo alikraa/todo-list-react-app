@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ITask } from '../ts/types.ts';
-import { tasksData } from '../ts/tasks-data.ts';
 
-const initialState: ITask[] = tasksData;
+const initialState: ITask[] = [];
 
 export const taskListSlice = createSlice({
   name: 'taskList',
@@ -13,11 +12,11 @@ export const taskListSlice = createSlice({
     },
 
     deleteTask(state, action: PayloadAction<string>) {
-      state.filter((item) => item.id !== action.payload);
+      return state.filter((item) => item.id !== action.payload);
     },
 
     changeTaskStatus(state, action: PayloadAction<string>) {
-      state.map((item) =>
+      return state.map((item) =>
         item.id === action.payload
           ? { ...item, isCompleted: !item.isCompleted }
           : item
@@ -25,14 +24,27 @@ export const taskListSlice = createSlice({
     },
 
     editTask(state, action: PayloadAction<string>) {
-      state.map((item) =>
+      return state.map((item) =>
         item.id === action.payload ? { ...item, isEdit: !item.isEdit } : item
+      );
+    },
+
+    editTaskText(state, action: PayloadAction<ITask>) {
+      return state.map((item) =>
+        item.id === action.payload.id
+          ? {
+              ...item,
+              text: action.payload.text,
+              isEdit: !item.isEdit,
+              isCompleted: false,
+            }
+          : item
       );
     },
   },
 });
 
-export const { addTask, deleteTask, changeTaskStatus, editTask } =
+export const { addTask, deleteTask, changeTaskStatus, editTask, editTaskText } =
   taskListSlice.actions;
 
 export default taskListSlice.reducer;
