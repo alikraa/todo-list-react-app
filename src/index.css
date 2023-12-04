@@ -11,7 +11,7 @@ html {
 }
 
 body {
-    height: 100vh;
     background: linear-gradient(45deg, rgb(133, 74, 182), rgb(247, 239, 253));
+    background-attachment: fixed;
     font-family: 'Roboto', sans-serif;
 }

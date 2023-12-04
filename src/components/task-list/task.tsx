@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { FiEdit3 } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
@@ -18,6 +18,8 @@ interface TaskProps {
 function Task({ task }: TaskProps) {
   const dispatch = useAppDispatch();
 
+  const [deletion, setDeletion] = useState(false);
+
   const actionButtonStyle = useMemo(
     () => ({
       size: '1.5em',
@@ -27,7 +29,13 @@ function Task({ task }: TaskProps) {
   );
 
   return (
-    <div className={styles.container}>
+    <div
+      className={
+        deletion
+          ? `${styles.container} ${styles.delete}`
+          : `${styles.container}`
+      }
+    >
       <div className={styles.taskContent}>
         <label
           htmlFor={task.id}
@@ -62,7 +70,10 @@ function Task({ task }: TaskProps) {
             type="button"
             aria-label="Удалить"
             className={styles.button}
-            onClick={() => dispatch(deleteTask(task.id))}
+            onClick={() => {
+              setDeletion(true);
+              setTimeout(() => dispatch(deleteTask(task.id)), 720);
+            }}
           >
             <IconContext.Provider value={actionButtonStyle}>
               <MdDelete />

@@ -3,6 +3,10 @@
     border-radius: 20px;
     padding: 15px;
     margin-bottom: 15px;
+
+    animation-name: appearance;
+    animation-duration: 3s;
+    animation-fill-mode: forwards;
 }
 
 .button {
@@ -10,6 +14,11 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+}
+
+.delete {
+    animation-name: deletion;
+    animation-duration: 0.7s;
 }
 
 .taskContent {
@@ -62,4 +71,24 @@
 
 .realCheckbox:checked+.customCheckbox::before {
     opacity: 1;
+}
+
+@keyframes appearance {
+    from {
+        transform: scale(0.8);
+    }
+
+    50% {
+        transform: scale(1.03);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+@keyframes deletion {
+    to {
+        transform: translate(-450px);
+    }
 }
