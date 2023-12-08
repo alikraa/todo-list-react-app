@@ -1,7 +1,7 @@
 interface ITask {
   id: string;
   text: string;
-  date: string;
+  date: number;
   isCompleted: boolean;
   isEdit: boolean;
 }

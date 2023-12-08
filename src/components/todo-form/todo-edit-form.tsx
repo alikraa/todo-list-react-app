@@ -3,7 +3,7 @@ import { IconContext } from 'react-icons';
 import { MdDone } from 'react-icons/md';
 import { ITask } from '../../ts/types.ts';
 import { useAppDispatch } from '../../store/hooks.ts';
-import { editTaskText } from '../../store/taskListSlice.ts';
+import { deleteTask, editTaskText } from '../../store/taskListSlice.ts';
 import styles from './todo-form.module.css';
 
 interface ToDoFormEdit {
@@ -33,12 +33,16 @@ function ToDoEditForm({ task }: ToDoFormEdit) {
     const updatedTask: ITask = {
       id: task.id,
       text: editValue,
-      date: task.date,
+      date: new Date().getTime(),
       isCompleted: task.isCompleted,
       isEdit: task.isEdit,
     };
 
-    dispatch(editTaskText(updatedTask));
+    if (editValue.trim()) {
+      dispatch(editTaskText(updatedTask));
+    } else {
+      dispatch(deleteTask(task.id));
+    }
   };
 
   return (

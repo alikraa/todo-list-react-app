@@ -35,6 +35,7 @@ export const taskListSlice = createSlice({
           ? {
               ...item,
               text: action.payload.text,
+              date: action.payload.date,
               isEdit: !item.isEdit,
               isCompleted: false,
             }

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { IconContext } from 'react-icons';
 import { FiEdit3 } from 'react-icons/fi';
 import { MdDelete } from 'react-icons/md';
+import { format } from 'date-fns';
 import { ITask } from '../../ts/types.ts';
 import {
   changeTaskStatus,
@@ -36,6 +37,7 @@ function Task({ task }: TaskProps) {
           : `${styles.container}`
       }
     >
+      <div className={styles.date}>{format(new Date(task.date), 'PPp')}</div>
       <div className={styles.taskContent}>
         <label
           htmlFor={task.id}

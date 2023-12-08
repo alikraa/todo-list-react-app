@@ -11,6 +11,7 @@ function ToDoForm() {
   const dispatch = useAppDispatch();
 
   const [inputValue, setInputValue] = useState('');
+  const [message, setMessage] = useState(true);
 
   const addButtonStyle = useMemo(
     () => ({
@@ -26,13 +27,18 @@ function ToDoForm() {
     const newTask: ITask = {
       id: nanoid(),
       text: inputValue,
-      date: '',
+      date: new Date().getTime(),
       isCompleted: false,
       isEdit: false,
     };
 
-    dispatch(addTask(newTask));
-    setInputValue('');
+    if (inputValue.trim()) {
+      dispatch(addTask(newTask));
+      setInputValue('');
+      setMessage(true);
+    } else {
+      setMessage(false);
+    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,27 +46,32 @@ function ToDoForm() {
   };
 
   return (
-    <div className={styles.container}>
-      <form className={styles.form} onSubmit={handleSubmit}>
-        <input
-          type="text"
-          id="task-input"
-          className={styles.input}
-          placeholder="выучить JavaScript..."
-          value={inputValue}
-          onChange={handleChange}
-        />
-        <button
-          type="submit"
-          aria-label="Добавить задачу"
-          className={styles.button}
-        >
-          <IconContext.Provider value={addButtonStyle}>
-            <IoIosAddCircleOutline />
-          </IconContext.Provider>
-        </button>
-      </form>
-    </div>
+    <>
+      <div className={styles.container}>
+        <form className={styles.form} onSubmit={handleSubmit}>
+          <input
+            type="text"
+            id="task-input"
+            className={styles.input}
+            placeholder="выучить JavaScript..."
+            value={inputValue}
+            onChange={handleChange}
+          />
+          <button
+            type="submit"
+            aria-label="Добавить задачу"
+            className={styles.button}
+          >
+            <IconContext.Provider value={addButtonStyle}>
+              <IoIosAddCircleOutline />
+            </IconContext.Provider>
+          </button>
+        </form>
+      </div>
+      <h2 className={styles.message} hidden={message}>
+        Заполните поле ввода
+      </h2>
+    </>
   );
 }
 
